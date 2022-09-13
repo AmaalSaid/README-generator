@@ -1,73 +1,86 @@
 // TODO: Include packages needed for this application
 const fs = require("fs");
 const inquire = require("inquirer");
-const markdown = require("./utils/generateMarkdown")
+const markdown = require("./utils/generateMarkdown.js")
 
 // TODO: Create an array of questions for user input
-function promptUser(){
-    return inquirer.prompt([
+const questions = [
+    "What is your project title?",  
+    "What would you like to call your file?",  
+    "Provide a short description explaining your project.",  
+    "What are the Installation instructions?", 
+    "Provide instructions for usage.",   
+    "Please enter contribution guidelines.",    
+    "Please enter test instructions.", 
+    "Please enter your github username.",   
+    "Please enter your email.",  
+    "What license would you like to use?"  
+];
+const [ projectTitleQ, filenameQ, descriptionQ, installationQ, usageQ, contributionsQ, testQ, githubQ, emailQ, licenseQ] = questions;
+function questionsFunc(){
+    inquire.prompt([    
         {
             type: "input",
-            name: "projectTitle",
-            message: "What is the project title?",
+            message: projectTitleQ,
+            name: "title"
         },
         {
             type: "input",
-            name: "description",
-            message: "Write a brief description of your project: "
+            message: filenameQ,
+            name: "filename"
         },
         {
             type: "input",
-            name: "installation",
-            message: "Describe the installation process if any: ",
+            message: descriptionQ,
+            name: "descr"
         },
         {
             type: "input",
-            name: "usage",
-            message: "What is this project usage for?"
+            message: installationQ,
+            name: "install"
+        },
+        {
+            type: "input",
+            message: usageQ,
+            name: "usage"
+        },
+        {
+            type: "input",
+            message: contributionsQ,
+            name: "constributions"
         },
         {
             type: "list",
+            message: licenseQ,
             name: "license",
-            message: "Chose the appropriate license for this project: ",
             choices: [
-                "Apache",
-                "Academic",
-                "GNU",
-                "ISC",
-                "MIT",
-                "Mozilla",
-                "Open"
-            ]
+                'MIT',
+                'GNU AGPL v3',
+                'Apache 2.0 License',
+                'Boost Software License 1.0'
+            ],
         },
         {
             type: "input",
-            name: "contributing",
-            message: "Who are the contributors of this projects?"
+            message: testQ,
+            name: "test"
         },
         {
             type: "input",
-            name: "tests",
-            message: "Is there a test included?"
+            message: githubQ,
+            name: "github"
         },
         {
             type: "input",
-            name: "questions",
-            message: "What do I do if I have an issue? "
-        },
-        {
-            type: "input",
-            name: "username",
-            message: "Please enter your GitHub username: "
-        },
-        {
-            type: "input",
-            name: "email",
-            message: "Please enter your email: "
+            message: emailQ,
+            name: "email"
         }
-    ]);
-} 
-
+    ])
+    .then((data) => {writeToFile(data.filename, data)})
+    
+    .catch((error) => {console.log(error)})
+    }
+    
 // TODO: Create a function to write README file
 function writeToFile(fileName, data) {
     fs.writeFile(`${fileName}.md`, markdown.generateMarkdown(data), (error) =>
@@ -78,6 +91,7 @@ function writeToFile(fileName, data) {
 // TODO: Create a function to initialize app
 function init() {
     questionsFunc();
+
 }
 
 // Function call to initialize app

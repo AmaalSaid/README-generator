@@ -63,7 +63,7 @@ ${renderLicenseLink(license)}
 ✏️ ${data.tests}
 ## Questions
   
-Feel free to contact me for further questions via:
+Feel free to contact me:
 Github: https://github.com/${github}
 Email: ${email}
 `;
